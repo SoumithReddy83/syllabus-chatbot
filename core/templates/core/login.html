@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +31,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0a/UCO_Bronchos_logo.svg/1200px-UCO_Bronchos_logo.svg.png" width="40" height="40" class="d-inline-block align-top" alt="">
+            <img src="{% static 'core/images/uco_logo.png' %}" width="40" height="40" class="d-inline-block align-top" alt="UCO Logo">
             UCO Syllabus Chatbot
         </a>
         <div class="collapse navbar-collapse">
@@ -52,7 +53,7 @@
         <div class="col-md-6">
             <div class="card p-4">
                 <div class="text-center mb-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0a/UCO_Bronchos_logo.svg/1200px-UCO_Bronchos_logo.svg.png" width="70" alt="UCO Logo">
+                    <img src="{% static 'core/images/uco_logo2.png' %}" width="280" height="120" alt="UCO Logo">
                     <h4 class="mt-2">Welcome to UCO Syllabus Chatbot</h4>
                 </div>
                 {% if form.errors %}
@@ -69,6 +70,9 @@
                     <a href="{% url 'forgot_username' %}">Forgot Username?</a> | 
                     <a href="{% url 'forgot_password' %}">Forgot Password?</a>
                 </div>
+                <div class="text-center mt-4">
+                    <a href="{% url 'register' %}">Don't have an account? Register here</a>
+                </div>                
                 <div class="text-center mt-4">
                     <small>Need help? Contact <a href="#">UCO IT Support</a>.</small>
                 </div>

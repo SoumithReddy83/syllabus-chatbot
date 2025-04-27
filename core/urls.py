@@ -6,6 +6,7 @@ from .views import ask_question
 from .views import home
 from .views import view_syllabus
 from .views import forgot_password, forgot_username
+from .views import register
 
 
 urlpatterns = [
@@ -19,4 +20,5 @@ urlpatterns = [
     path('view/<int:syllabus_id>/', view_syllabus, name='view_syllabus'),
     path('forgot-password/', forgot_password, name='forgot_password'),
     path('forgot-username/', forgot_username, name='forgot_username'),
+    path('register/', register, name='register'),
 ]

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +35,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0a/UCO_Bronchos_logo.svg/1200px-UCO_Bronchos_logo.svg.png" width="40" height="40" class="d-inline-block align-top" alt="">
+            <img src="{% static 'core/images/uco_logo.png' %}" width="40" height="40" class="d-inline-block align-top" alt="UCO Logo">
             UCO Syllabus Chatbot
         </a>
         <div class="collapse navbar-collapse">
