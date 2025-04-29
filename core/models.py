@@ -22,6 +22,7 @@ class Syllabus(models.Model):
     course_name = models.CharField(max_length=100)
     syllabus_file = models.FileField(upload_to='syllabi/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    extracted_text = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.course_name} ({self.course_number}) - {self.department}"

@@ -13,7 +13,7 @@ from django.contrib import messages
 from .forms import ForgotUsernameForm
 from django.contrib.auth.forms import PasswordResetForm
 from .forms import UserRegisterForm
-
+import fitz 
 
 
 
@@ -55,7 +55,7 @@ def dashboard(request):
 @login_required
 def upload_syllabus(request):
     if request.user.role != 'professor':
-        return redirect('dashboard')  # Only professors can upload
+        return redirect('dashboard')
 
     if request.method == 'POST':
         form = SyllabusUploadForm(request.POST, request.FILES)
@@ -63,12 +63,30 @@ def upload_syllabus(request):
             syllabus = form.save(commit=False)
             syllabus.professor = request.user
             syllabus.save()
-            messages.success(request, 'Syllabus uploaded successfully!')
+
+            # ✅ Extract full text from uploaded PDF (no splitting)
+            pdf_path = syllabus.syllabus_file.path
+            try:
+                doc = fitz.open(pdf_path)
+                extracted_text = ""
+                for page in doc:
+                    page_text = page.get_text()
+                    extracted_text += page_text + "\n\n"  # Add some spacing between pages
+
+                syllabus.extracted_text = extracted_text.strip()
+                syllabus.save()
+
+                messages.success(request, 'Syllabus uploaded and text extracted successfully.')
+            except Exception as e:
+                print("PDF extraction error:", e)
+                messages.error(request, 'Failed to extract text from PDF.')
+
             return redirect('dashboard')
     else:
         form = SyllabusUploadForm()
-    return render(request, 'core/upload.html', {'form': form})
 
+    return render(request, 'core/upload.html', {'form': form})
+    
 def search_syllabus(request):
     query = request.GET.get('q')
     results = []
@@ -96,7 +114,7 @@ def ask_question(request, syllabus_id):
         form = AskQuestionForm(request.POST)
         if form.is_valid():
             question_text = form.cleaned_data['question']
-            context = f"Syllabus: {syllabus.course_name} ({syllabus.course_number})\nDepartment: {syllabus.department}\n\nQuestion: {question_text}"
+            context = f"Syllabus Text: {syllabus.extracted_text}\n\nQuestion: {question_text}"
             answer = talk_llm(context)
     else:
         form = AskQuestionForm(initial={'syllabus_id': syllabus.id})
